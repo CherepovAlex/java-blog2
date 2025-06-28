@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${article.title}">Статья</title>
+</head>
+<body>
+    <h1 th:text="${article.title}">Заголовок</h1>
+    <p><i>Опубликовано: <span th:text="${article.publishedDate}">дата</span></i></p>
+
+    <div th:text="${article.content}">Содержимое статьи</div>
+
+    <p>Источник:
+        <a th:href="@{'/source/' + ${article.source}}"
+           th:text="${article.source}">Источник</a>
+    </p>
+</body>
+</html>

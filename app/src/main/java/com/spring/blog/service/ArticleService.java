@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // создаём временное хранилище
 @Service
@@ -41,6 +42,19 @@ public class ArticleService {
                 .filter(a -> a.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+    // добавим больше статей
+    public List<Article> getArticleBySource(String source) {
+        return articles.stream()
+                .filter(a -> a.getSource().equalsIgnoreCase(source))
+                .toList();
+    }
+    // добавим группировку по источнику
+    public List<String> getSource() {
+        return articles.stream()
+                .map(Article::getSource)
+                .distinct()
+                .toList();
     }
 
 }
