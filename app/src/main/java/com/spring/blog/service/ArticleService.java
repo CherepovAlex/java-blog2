@@ -32,6 +32,12 @@ public class ArticleService {
         b.setSource("JavaArticle");
         articles.add(b);
     }
+    // добавление статьи
+    public void addArticle(Article article) {
+        article.setId((long) (articles.size() + 1)); // простой автоинкремент
+        article.setPublishedDate(LocalDate.now());
+        articles.add(article);
+    }
 
     public List<Article> getArticles() {
         return articles;

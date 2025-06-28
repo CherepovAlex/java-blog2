@@ -25,4 +25,16 @@ public class ArticleController {
         model.addAttribute("article", article);
         return "article";
     }
+    // для формы создания статьи - показывает пустую форму (мы кладём в модель новый Article)
+    @GetMapping("/new")
+    public String showNewArticleForm(Model model) {
+        model.addAttribute("article", new Article());
+        return "new-article";
+    }
+    // получает заполненный объект Article, добавляет его в память и делает редирект на главную страницу
+    @PostMapping("/new")
+    public String createArticle(@ModelAttribute Article article) {
+        articleService.addArticle(article);
+        return "redirect:/";
+    }
 }
