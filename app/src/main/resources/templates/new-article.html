@@ -6,19 +6,27 @@
 <body>
 <h1>Создать новую статью</h1>
 
-<form th:action="@{/article/new}" th:object="${article}" method="post">
+<form th:action="@{/article/new}" th:object="${article}" method="post" enctype="multipart/form-data">
     <p>
-        Заголовок: <input type="text" th:field="*{title}" />
+        Заголовок: <input type="text" th:field="*{title}"/>
     </p>
     <p>
         Содержание:<br>
         <textarea th:field="*{content}" rows="10" cols="50"></textarea>
     </p>
     <p>
-        Источник: <input type="text" th:field="*{source}" />
+        Источник: <input type="text" th:field="*{source}"/>
     </p>
     <p>
-        Ссылки (через запятую): <input type="text" th:field="*{links}" />
+        Загрузить изображения: <input type="file" name="imageFile" multiple />
+    </p>
+    <p>
+        Примеры кода:<br>
+        <textarea name="codeBlock" rows="5" cols="50"></textarea><br>
+        <textarea name="codeBlock" rows="5" cols="50"></textarea><br>
+    </p>
+    <p>
+        Ссылки (через запятую): <input type="text" th:field="*{links}"/>
     </p>
 
     <button type="submit">Сохранить статью</button>

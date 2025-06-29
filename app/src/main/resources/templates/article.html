@@ -4,14 +4,28 @@
     <title th:text="${article.title}">Статья</title>
 </head>
 <body>
-    <h1 th:text="${article.title}">Заголовок</h1>
-    <p><i>Опубликовано: <span th:text="${article.publishedDate}">дата</span></i></p>
+<h1 th:text="${article.title}">Заголовок</h1>
+<p><i>Опубликовано: <span th:text="${article.publishedDate}">дата</span></i></p>
 
-    <div th:text="${article.content}">Содержимое статьи</div>
+<div th:text="${article.content}">Содержимое статьи</div>
 
-    <p>Источник:
-        <a th:href="@{'/source/' + ${article.source}}"
-           th:text="${article.source}">Источник</a>
-    </p>
+<div>
+    <h2>Иллюстрации:</h2>
+    <div th:each="img : ${article.images}">
+        <img th:src="${img}" style="max-width: 400px;" alt="Изображение"/>
+    </div>
+</div>
+
+<div>
+    <h2>Примеры кода:</h2>
+    <div th:each="code : ${article.codeBlocks}">
+        <pre><code th:text="${code}"></code></pre>
+    </div>
+</div>
+
+<p>Источник:
+    <a th:href="@{'/source/' + ${article.source}}"
+       th:text="${article.source}">Источник</a>
+</p>
 </body>
 </html>

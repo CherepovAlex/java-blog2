@@ -1,44 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Java Блог</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header, footer {
+            background: #f0f0f0;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 1rem;
+            border-radius: 8px;
+            background: white;
+            text-align: center;
+        }
+
+        .card img {
+            max-width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .nav-right {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+    </style>
 </head>
 <body>
 
-<header class="bg-dark text-white p-3 mb-4">
-    <div class="container d-flex justify-content-between">
-        <h1 class="h4">Java Блог</h1>
-        <form th:action="@{/search}" method="get">
-            <input type="text" name="query" placeholder="Поиск..." class="form-control form-control-sm"/>
-        </form>
+<header>
+    <h1>Добро пожаловать в Java Блог</h1>
+    <div class="nav-right">
+        <sec:authorize access="isAuthenticated()">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Выйти</button>
+            </form>
+        </sec:authorize>
+        <sec:authorize access="!isAuthenticated()">
+            <a th:href="@{/login}">Войти</a>
+        </sec:authorize>
     </div>
 </header>
 
-<ul>
-    <li th:each="article : ${articles}">
-        <a th:href="@{'/article/' + ${article.id}}">
-            <span th:text="${article.title}">Заголовок статьи</span>
-        </a> — <span th:text="${article.publishedDate}">Дата</span>
-    </li>
-</ul>
+<div class="container">
+    <form th:action="@{/search}" method="get">
+        <input type="text" name="query" placeholder="Поиск по статьям..." style="width: 80%; padding: 0.5rem;"/>
+        <button type="submit">Поиск</button>
+    </form>
 
-<main class="container">
-    <div class="row row-cols-1 row-cols-md-5 g-4">
-        <div class="col" th:each="post : ${posts}">
-            <div class="card h-100">
-                <img th:src="${post.image}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <a th:href="@{/post/{id}(id=${post.title})}" class="card-title" th:text="${post.title}">Название</a>
-                </div>
-            </div>
+    <h2>Последние статьи</h2>
+    <div class="grid">
+        <div class="card" th:each="article : ${articles}">
+            <a th:href="@{'/article/' + ${article.id}}">
+                <img th:src="${article.images != null and !article.images.isEmpty()} ? ${article.images[0]} : '/img/placeholder.jpg'"
+                     alt="Обложка статьи">
+                <h3 th:text="${article.title}">Название статьи</h3>
+            </a>
         </div>
     </div>
-</main>
+</div>
 
-<footer class="bg-light text-center p-3 mt-4">
-    &copy; 2025 Java Блог
+<footer>
+    <p>&copy; 2025 Java Блог. Все права защищены.</p>
 </footer>
 
 </body>
